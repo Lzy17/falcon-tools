@@ -1,0 +1,8 @@
+bitsandbytes==0.39.0
+datasets==2.12.0
+loralib==0.1.1
+einops==0.6.1
+datasets==2.12.0
+git+https://github.com/huggingface/transformers.git@e03a9cc 
+git+https://github.com/huggingface/peft.git@42a184f
+git+https://github.com/huggingface/accelerate.git@c9fbb71
