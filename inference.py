@@ -18,18 +18,18 @@ from transformers import(
 #login()
 
 
-#model_name = "tiiuae/falcon-40b-instruct"
+model_name = "tiiuae/falcon-40b-instruct"
 #model_name = "decapoda-research/llama-7b-hf"
-model_name = "tiiuae/falcon-7b-instruct"
+#model_name = "tiiuae/falcon-7b-instruct"
 print(torch.cuda.is_available())
 
 #if you are using AMD GPU you need to install bnb by hand
 
 bnb_config = BitsAndBytesConfig(
-    load_in_8bit=True,
-    bnb_8bit_use_double_quant=True,
-    bnb_8bit_quant_type="nf16",
-    bnb_8bit_compute_dtype=torch.bfloat16,
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16
 )
 
 
@@ -37,10 +37,12 @@ model = AutoModelForCausalLM.from_pretrained(
     model_name,
     device_map="auto", 
     trust_remote_code=True,
-    load_in_8bit = True,
-    #quantization_config=bnb_config,
+    #load_in_8bit = True,
+    quantization_config=bnb_config,
 )
 
+
+print("------------------- MODEL quantization -------------------")
 dtypes = {}
 for _, p in model.named_parameters():
     dtype = p.dtype
@@ -59,9 +61,9 @@ for k, v in dtypes.items():
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
 
-
+print("------------------- User prompt -------------------")
 prompt = f"""
-            who are you?
+            Write a poem of San Diego
           """.strip()
         
 print(prompt)
