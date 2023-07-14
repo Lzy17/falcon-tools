@@ -71,14 +71,14 @@ print(prompt)
 #generation config (use the default now)
 generation_config = model.generation_config
 generation_config.max_new_tokens = 128
-generation_config.temperature = 0.7
+generation_config.temperature = 0.1
 generation_config.top_p = 0.7
 generation_config.num_return_sequence = 1
 generation_config.pad_token_id = tokenizer.eos_token_id
 generation_config.eos_token_id = tokenizer.eos_token_id
 
 #print config
-print(generation_config)
+#print(generation_config)
 
 
 #model inference 
@@ -86,6 +86,7 @@ device = "cuda"
 
 encoding = tokenizer(prompt, return_tensors="pt").to(device)
 
+print("------------------- Model output -------------------")
 start_time = time.time()
 #need to turn deepspeed
 with torch.inference_mode():
